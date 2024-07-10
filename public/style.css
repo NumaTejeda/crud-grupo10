@@ -1,0 +1,56 @@
+#title {
+  text-align: center;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  /* width: 100%; */
+}
+
+.box {
+  flex: 1 1 20%;
+  box-sizing: border-box;
+  min-height: 331px;
+  min-width: 300px;
+}
+
+input {
+  margin: 5px 0;
+}
+
+button {
+  margin: 5px 0;
+}
+
+#container-registro {
+  min-width: 100%;
+  width: fit-content;
+  height: 200px;
+  overflow-y: auto;
+  border: 1px solid blue;
+}
+
+#crear {
+  border: 2px solid blue;
+  padding: 5px;
+  margin: 5px 5px;
+}
+
+#leer {
+  border: 2px solid green;
+  padding: 5px;
+  margin: 5px 5px;
+}
+
+#actualizar {
+  border: 2px solid yellow;
+  padding: 5px;
+  margin: 5px 5px;
+}
+
+#eliminar {
+  border: 2px solid red;
+  padding: 5px;
+  margin: 5px 5px;
+}

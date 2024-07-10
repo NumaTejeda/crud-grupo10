@@ -1,29 +1,30 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import connection from './config/db.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.json());
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
-    res.send('<h1>Hola desde el back</h1>')
+    res.sendFile(path.join(__dirname, './views', '/index.html'));
+    // res.send('<h1>Hola desde el back</h1>')
 })
 
 app.post('/clientes', async (req, res) => {
-    let { nombre, email, password } = await req.body;
-    console.log(nombre)
-    console.log(email)
-    console.log(password)
-    // let nombre = req.params.nombre
-    // let email = req.params.email
-    // let password = req.params.password
+    let { name, email, pass } = await req.body;
+
     let query = 'INSERT INTO clientes (nombre, email, password) VALUES (?, ?, ?)';
 
     try {
-        const [result] = await connection.execute(query, [nombre, email, password]);
+        const [result] = await connection.execute(query, [name, email, pass]);
         res.status(201).json({ message: 'Usuario creado', result });
     } catch (error) {
         console.error('Error al insertar en la base de datos:', error);
@@ -37,14 +38,40 @@ app.get('/clientes', async (req, res) => {
 })
 
 app.put('/clientes/:id', async (req, res) => {
-    const { nombre } = await req.body
+    const { name } = await req.body
     const id = req.params.id;
-    console.log(id)
-    console.log(nombre)
     let query = 'UPDATE clientes SET nombre = ? WHERE id = ?'
-    let [result] = await connection.execute(query, [nombre, id])
-    res.status(200).json({ message: `Usuario con id: ${id} actualizado a: ${nombre}` })
+    try {
+        await connection.execute(query, [name, id])
+        res.status(200).json({ message: `Usuario con id: ${id} actualizado a: ${name}` })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Error en el servidor' })
+    }
 })
+
+app.delete('/clientes/:id', async (req, res) => {
+    const id = req.params.id;
+    let getName = 'SELECT * FROM clientes WHERE id = ?'
+    let deleteUser = 'DELETE FROM clientes WHERE id = ?'
+    const [[{ nombre }], ...rest] = await connection.execute(getName, [id])
+    console.log(nombre)
+    if (nombre) {
+        try {
+            const result = await connection.execute(deleteUser, [id])
+            console.log(result);
+            res.status(200).json({ message: `Usuario ${nombre} con id: ${id} ha sido eliminado` })
+
+        } catch (error) {
+            res.status(500).json({ error: error });
+        }
+    } else {
+        res.status(404).json({ error: `El usuario con id: ${id} no existe` })
+    }
+
+})
+
+
 
 const PORT = process.env.PORT || 3000;
 

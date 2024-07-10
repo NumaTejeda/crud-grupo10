@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+
+</head>
+
+<body>
+    <h1 id="title">CRUD</h1>
+    <main>
+        <div id="crear" class="box">
+            <h2>CREAR</h2>
+            <label for="name">Nombre: </label><br>
+            <input type="text" name="name" id="nameC"><br>
+            <label for="mail">Mail: </label><br>
+            <input type="text" name="mail" id="mail"><br>
+            <label for="pass">Password: </label><br>
+            <input type="password" name="pass" id="pass"><br>
+            <button onclick="crearUsuario()">Crear Usuario</button>
+        </div>
+        <div id="leer" class="box">
+            <h2>LEER</h2>
+            <button onclick="leerRegistro()">Leer usuarios</button>
+            <div id="container-registro">
+                <ul id="registro"></ul>
+            </div>
+        </div>
+        <div id="actualizar" class="box">
+            <h2>ACTUALIZAR</h2>
+            <label for="id_update">ID de usuario a actualizar:</label><br>
+            <input type="number" name="id_update" id="id_update"><br>
+            <label for="name_update">Actualizar nombre:</label><br>
+            <input type="text" name="name_update" id="name_update"><br>
+            <button onclick="actualizarUsuario()">Actualizar usuario</button>
+        </div>
+        <div id="eliminar" class="box">
+            <h2>ELIMINAR</h2>
+            <label for="id_delete">ID de usuario a eliminar:</label>
+            <input type="number" name="id_delete" id="id_delete"><br>
+            <button onclick="eliminarUsuario()">Eliminar usuario</button>
+        </div>
+
+    </main>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js"></script>
+</body>
+
+</html>
