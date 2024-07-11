@@ -37,6 +37,13 @@ app.get('/clientes', async (req, res) => {
     res.json(result)
 })
 
+app.get('/clientes/:id', async (req, res) => {
+    const id = req.params.id;
+    let query = 'SELECT * FROM clientes WHERE id=?'
+    let [result] = await connection.execute(query, [id])
+    res.json(result)
+})
+
 app.put('/clientes/:id', async (req, res) => {
     const { name } = await req.body
     const id = req.params.id;
@@ -69,6 +76,13 @@ app.delete('/clientes/:id', async (req, res) => {
         res.status(404).json({ error: `El usuario con id: ${id} no existe` })
     }
 
+})
+
+app.get('/carrito/:id', async (req, res) => {
+    const id = req.params.id;
+    let query = 'SELECT T0.idCliente, T1.nombre AS nombreCliente,T1.email, T2.nombre AS nombreProducto, T2.descripcion, T2.precio FROM carritoDeCompras AS T0 INNER JOIN clientes AS T1 ON T0.idCliente = T1.id INNER JOIN productos AS T2 ON T0.idProducto = T2.id WHERE T0.idCarrito=?'
+    let [result] = await connection.execute(query, [id])
+    res.json(result)
 })
 
 
